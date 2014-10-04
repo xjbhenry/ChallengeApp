@@ -43,7 +43,6 @@ public class AppController extends Application {
             getLruBitmapCache();
             mImageLoader = new ImageLoader(this.mRequestQueue, mLruBitmapCache);
         }
-
         return this.mImageLoader;
     }
 

@@ -72,7 +72,7 @@
             android:paddingRight="@dimen/feed_item_status_pad_left_right"
             android:textColorLink="@color/link" />
 
-        <com.maximos.mobile.feedpageproject.FeedImageView
+        <com.maximos.mobile.challengeapp.feedpageproject.FeedImageView
             android:id="@+id/feedImage1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
