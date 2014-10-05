@@ -6,5 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="add_challenge">Add Challenge</string>
     <string name="title_activity_create_challenge">CreateChallengeActivity</string>
+    <string name="feed_page">Challenge Wall</string>
+
+    <string name="challenge_title">Challenge Title</string>
+    <string name="challenge_description">Challenge Description</string>
+
 
 </resources>
