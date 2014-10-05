@@ -1,4 +1,4 @@
-package com.maximos.mobile.challengeapp;
+package com.maximos.mobile.challengeapp.data;
 
 /**
  * Created by Henry on 10/4/2014.

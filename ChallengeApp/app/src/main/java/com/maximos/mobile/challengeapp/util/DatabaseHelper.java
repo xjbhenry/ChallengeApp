@@ -1,4 +1,4 @@
-package com.maximos.mobile.challengeapp;
+package com.maximos.mobile.challengeapp.util;
 
 /**
  * Created by Henry on 10/4/2014.
@@ -10,6 +10,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.maximos.mobile.challengeapp.data.Post;
+import com.maximos.mobile.challengeapp.data.Profile;
+import com.maximos.mobile.challengeapp.data.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class DatabaseHelper {
     private static final String LOG = "DatabaseHelper";
 
     public static class DatabaseOpenHelper extends SQLiteOpenHelper {
-        DatabaseOpenHelper(Context context) {
+        public DatabaseOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
@@ -52,6 +56,7 @@ public class DatabaseHelper {
                     "PRIMARY KEY(postId));");
             sqLiteDatabase.execSQL("CREATE_TABLE" + profile +
                     "userId INT(8)" +
+                    "name VARCHAR(255)" +
                     "challengeIdCompleted TEXT," +
                     "challengeIdOngoing TEXT," +
                     "challengeIdCreated TEXT" +
@@ -98,6 +103,7 @@ public class DatabaseHelper {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues cv = new ContentValues();
+
             cv.put("name", user.getName());
             cv.put("email",user.getEmail());
             cv.put("address", user.getAddress());
@@ -128,6 +134,7 @@ public class DatabaseHelper {
 
             ContentValues cv = new ContentValues();
             cv.put("userId", profile.getUserId());
+            cv.put("name", profile.getName());
             cv.put("challengeIdCompleted", profile.getChallengeIdCompletedCat());
             cv.put("challengeIdOngoing",profile.getChallengeIdOngoingCat());
             cv.put("challengeIdCreated", profile.getChallengeIdCreatedCat());
@@ -140,9 +147,9 @@ public class DatabaseHelper {
         }
 
         //loc, profile remains
-        public List<User> getAllUserInfo() {
+        public List getAllUserInfo(int userIdSel) {
             List<User> user = new ArrayList<User>();
-            String query = "SELECT * FROM" + "user";
+            String query = "SELECT * FROM" + "user" + "WHERE user='" + userIdSel + "'" ;
 
             Log.e(LOG, query);
             SQLiteDatabase db = this.getReadableDatabase();
@@ -162,12 +169,14 @@ public class DatabaseHelper {
                     user.add(userSelected);
                 } while (cursor.moveToNext());
             }
+            //String userJson = new Gson().toJson(user);
+            ///return userJson;
             return user;
         }
 
-        public List<Post> getAllPostInfo() {
+        public List<Post> getAllPostInfo(int postIdSel) {
             List<Post> post = new ArrayList<Post>();
-            String query = "SELECT * FROM" + "user";
+            String query = "SELECT * FROM" + "post" + "WHERE post='" + postIdSel +"'" ;
 
             Log.e(LOG, query);
             SQLiteDatabase db = this.getReadableDatabase();
@@ -190,9 +199,9 @@ public class DatabaseHelper {
             return post;
         }
 
-        public List<Profile> getAllProfileInfo() {
+        public List<Profile> getAllProfileInfo(int usrIdSel) {
             List<Profile> profile = new ArrayList<Profile>();
-            String query = "SELECT * FROM" + "profile";
+            String query = "SELECT * FROM" + "profile" + "WHERE profile='" + usrIdSel +"'";
 
             Log.e(LOG, query);
             SQLiteDatabase db = this.getReadableDatabase();
@@ -203,12 +212,13 @@ public class DatabaseHelper {
                 do {
                     Profile profileSelected = new Profile();
                     profileSelected.setUserId(cursor.getInt(cursor.getColumnIndex("postId")));
+                    profileSelected.setName(cursor.getString(cursor.getColumnIndex("name")));
                     profileSelected.setChallengeIdCompletedCat(cursor.getString(cursor.getColumnIndex("challengeIdCompleted")));
                     profileSelected.setChallengeIdOngoingCat(cursor.getString(cursor.getColumnIndex("challengeIdOngoing")));
                     profileSelected.setChallengeIdCreatedCat(cursor.getString(cursor.getColumnIndex("challengeIdCreated")));
                     profileSelected.setCredits(cursor.getInt(cursor.getColumnIndex("credits")));
                     profileSelected.setFriendsIdCat(cursor.getString(cursor.getColumnIndex("friendsId")));
-                    profileSelected.setAffiliationIdCat(cursor.getString(cursor.getColumnIndex("affiliationId")));
+                   // profileSelected.setAffiliationIdCat(cursor.getString(cursor.getColumnIndex("affiliationId")));
                     profileSelected.setVisitedPlaceIdCat(cursor.getString(cursor.getColumnIndex("visitedPlaceId")));
                     profileSelected.setInterestIdCat(cursor.getString(cursor.getColumnIndex("interestId")));
                     profileSelected.setDescription(cursor.getString(cursor.getColumnIndex("description")));

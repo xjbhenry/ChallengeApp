@@ -1,10 +1,11 @@
-package com.maximos.mobile.challengeapp;
+package com.maximos.mobile.challengeapp.data;
 
 /**
  * Created by Henry on 10/4/2014.
  */
 public class Profile {
     int userId;
+    String name;
     int[] challengeIdCompleted;
     String challengeIdCompletedCat;
     int[] challengeIdOngiong;
@@ -14,13 +15,20 @@ public class Profile {
     int credits;
     int[] friendsId;
     String friendsIdCat;
-    int[] affiliationId;
-    String affiliationIdCat;
+    int affiliationId;
     int[] visitedPlaceId;
     String visitedPlaceIdCat;
     int[] interestId;
     String interestIdCat;
     String description;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getUserId() {
         return userId;
@@ -38,11 +46,6 @@ public class Profile {
     public String getVisitedPlaceIdCat() {
         visitedPlaceIdCat = catenate(visitedPlaceId);
         return visitedPlaceIdCat;
-    }
-
-    public String getAffiliationIdCat() {
-        affiliationIdCat = catenate(affiliationId);
-        return affiliationIdCat;
     }
 
     public String getFriendsIdCat() {
@@ -125,12 +128,8 @@ public class Profile {
         this.friendsIdCat = friendsIdCat;
     }
 
-    public void setAffiliationId(int[] affiliationId) {
+    public void setAffiliationId(int affiliationId) {
         this.affiliationId = affiliationId;
-    }
-
-    public void setAffiliationIdCat(String affiliationIdCat) {
-        this.affiliationIdCat = affiliationIdCat;
     }
 
     public void setVisitedPlaceId(int[] visitedPlaceId) {
@@ -155,5 +154,9 @@ public class Profile {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getAffiliationId() {
+        return affiliationId;
     }
 }
