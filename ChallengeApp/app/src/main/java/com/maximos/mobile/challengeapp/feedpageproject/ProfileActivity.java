@@ -1,6 +1,7 @@
 package com.maximos.mobile.challengeapp.feedpageproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ public class ProfileActivity extends Activity {
     private ListView listView;
     ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
     private SimpleAdapter adapter;
+    private static final String TAG_ID = "id";
+    private static final String TAG_CHALLENGE = "challenge";
     //private FeedListAdapter listAdapter;
     //private List<FeedItem> feedItems;
     //private List<Profile> mProfileSelected;
@@ -46,8 +49,8 @@ public class ProfileActivity extends Activity {
 
         for(int i=0; i<mValues.length; i++){
             HashMap<String,String> item = new HashMap<String,String>();
-            item.put( "food", mValues[i]);
-            item.put( "place", mValuesSub[i] );
+            item.put( TAG_CHALLENGE, mValues[i]);
+            item.put( TAG_ID, mValuesSub[i] );
             list.add( item );
         }
 
@@ -60,7 +63,7 @@ public class ProfileActivity extends Activity {
                 this,
                 list,
                 android.R.layout.simple_list_item_2,
-                new String[] { "food","place" },
+                new String[] { TAG_CHALLENGE,TAG_ID },
                 new int[] { android.R.id.text1, android.R.id.text2 } );
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, values);
@@ -83,48 +86,19 @@ public class ProfileActivity extends Activity {
                 int itemPosition     = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
+                //String  itemValue    = (String) listView.getItemAtPosition(position);
+                HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
+                String itemValue = map.get(TAG_ID);
 
                 // Show Alert
                 Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
+                        "Position :" + itemPosition + "  ID : " + itemValue, Toast.LENGTH_LONG)
                         .show();
+                Intent intent = new Intent(ProfileActivity.this,ProfileSubActivity.class);
+                startActivity(intent);
             }
         });
     }
-        //databaseHelper = new DatabaseHelper();
-
-       /* mProfileSelected = new ArrayList<Profile>();
-        DatabaseHelper.DatabaseOpenHelper dataBaseOpenHelper = new DatabaseHelper.DatabaseOpenHelper(this);
-        mProfileSelected = dataBaseOpenHelper.getAllUserInfo(userId);
-
-
-        listAdapter = new FeedListAdapter(this, feedItems);
-        listView.setAdapter(listAdapter);
-
-        for(int i = 0; i < mProfileSelected.size(); i++) {
-            Profile profile = new Profile();
-            profile.setName(mProfileSelected.get(i).getName());
-            profile.setUserId(mProfileSelected.get(i).getUserId());
-            profile.setAffiliationId(mProfileSelected.get(i).getAffiliationId());
-        }*/
-
-
-        // Image might be null sometimes
-/*        String image = feedObj.isNull("image") ? null : feedObj
-                .getString("image");
-        item.setImage(image);
-        item.setStatus(feedObj.getString("status"));
-        item.setProfilePic(feedObj.getString("profilePic"));
-        item.setTimeStamp(feedObj.getString("timeStamp"));
-
-        // url might be null sometimes
-        String feedUrl = feedObj.isNull("url") ? null : feedObj
-                .getString("url");
-        item.setUrl(feedUrl);
-
-        feedItems.add(item);*/
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
