@@ -175,6 +175,11 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
         }
+        if(item.getItemId()==R.id.profile) {
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

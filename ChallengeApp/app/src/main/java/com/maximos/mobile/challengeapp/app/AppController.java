@@ -7,7 +7,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.facebook.model.GraphUser;
 import com.maximos.mobile.challengeapp.volley.LruBitmapCache;
+
+import java.util.List;
 
 public class AppController extends Application {
 
@@ -24,7 +27,15 @@ public class AppController extends Application {
         super.onCreate();
         mInstance = this;
     }
+    private List<GraphUser> selectedUsers;
 
+    public List<GraphUser> getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(List<GraphUser> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
     public static synchronized AppController getInstance() {
         return mInstance;
     }

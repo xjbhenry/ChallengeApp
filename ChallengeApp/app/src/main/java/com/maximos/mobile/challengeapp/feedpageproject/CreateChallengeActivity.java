@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.widget.PickerFragment;
+import com.maximos.mobile.challengeapp.FetchFriends.FriendPickerSampleActivity;
+import com.maximos.mobile.challengeapp.FetchFriends.PickFriendsActivity;
 import com.maximos.mobile.challengeapp.R;
 
 import java.io.DataInputStream;
@@ -54,6 +57,15 @@ public class CreateChallengeActivity extends Activity {
                 intent.setType("video/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Video "), SELECT_VIDEO);
+            }
+        });
+        ((Button)findViewById(R.id.selectFriend)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                intent = new Intent(CreateChallengeActivity.this, FriendPickerSampleActivity.class);
+                startActivity(intent);
+
             }
         });
     }
@@ -203,9 +215,11 @@ public class CreateChallengeActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

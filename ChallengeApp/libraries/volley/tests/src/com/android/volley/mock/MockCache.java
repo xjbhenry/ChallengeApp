@@ -18,6 +18,9 @@ package com.android.volley.mock;
 
 import com.android.volley.Cache;
 
+
+import java.util.Map;
+
 public class MockCache implements Cache {
 
     public boolean clearCalled = false;
@@ -27,16 +30,16 @@ public class MockCache implements Cache {
     }
 
     public boolean getCalled = false;
-    private Entry mFakeEntry = null;
+    private Map.Entry mFakeEntry = null;
 
-    public void setEntryToReturn(Entry entry) {
+    public void setEntryToReturn(Map.Entry entry) {
         mFakeEntry = entry;
     }
 
     @Override
     public Entry get(String key) {
         getCalled = true;
-        return mFakeEntry;
+        return (Entry) mFakeEntry;
     }
 
     public boolean putCalled = false;
