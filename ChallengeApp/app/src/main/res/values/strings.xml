@@ -12,6 +12,7 @@
     <string name="challenge_comp">Challenges Completed</string>
     <string name="challenge_title">Challenge Title</string>
     <string name="challenge_description">Challenge Description</string>
+    <string name="challenge_details">Challenge Details</string>
 
 
 </resources>

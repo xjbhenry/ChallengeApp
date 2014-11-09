@@ -14,7 +14,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,8 +37,14 @@
             android:name=".feedpageproject.CreateChallengeActivity"
             android:label="@string/title_activity_create_challenge" >
         </activity>
-        <activity android:name=".feedpageproject.ProfileActivity"
-                  android:label="@string/profile"></activity>
+        <activity
+            android:name=".feedpageproject.ProfileActivity"
+            android:label="@string/profile">
+        </activity>
+        <activity
+            android:name=".feedpageproject.ProfileSubActivity"
+            android:label="@string/challenge_details">
+        </activity>
     </application>
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
