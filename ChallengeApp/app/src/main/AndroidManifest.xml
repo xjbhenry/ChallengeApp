@@ -38,6 +38,8 @@
             android:name=".feedpageproject.CreateChallengeActivity"
             android:label="@string/title_activity_create_challenge" >
         </activity>
+        <activity android:name=".feedpageproject.ProfileActivity"
+                  android:label="@string/profile"></activity>
     </application>
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />

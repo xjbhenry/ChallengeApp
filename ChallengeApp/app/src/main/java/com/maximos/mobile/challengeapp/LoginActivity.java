@@ -34,6 +34,8 @@ import com.maximos.mobile.challengeapp.feedpageproject.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -62,9 +64,13 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
     private View mSignOutButtons;
     private View mLoginFormView;
 
+    public Logger logger = Logger.getLogger(LoginActivity.class.getName());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        logger.log(Level.INFO, "Inside OnCreate in Login Activity");
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         // Find the Google+ sign in button.
@@ -114,6 +120,33 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         mProgressView = findViewById(R.id.login_progress);
         mEmailLoginFormView = findViewById(R.id.email_login_form);
         mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
+
+        logger.log(Level.INFO, "OnCreate Exit in Login Activity");
+
+    }
+
+    @Override
+    protected void onPause() {
+        logger.log(Level.INFO, "Inside onPause of login Activity");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        logger.log(Level.INFO, "Inside OnStop in Login Activity ");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        logger.log(Level.INFO, "Inside Onstart in login activity" );
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        logger.log(Level.INFO, "Inside OnDestroy in login activity" );
+        super.onDestroy();
     }
 
     private void populateAutoComplete() {

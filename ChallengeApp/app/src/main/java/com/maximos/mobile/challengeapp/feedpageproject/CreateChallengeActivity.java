@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CreateChallengeActivity extends Activity {
 
@@ -29,6 +31,8 @@ public class CreateChallengeActivity extends Activity {
     private static final int SELECT_VIDEO = 3;
     private static final int SELECT_IMAGE = 1;
     String selectedPath = "";
+
+    public Logger logger = Logger.getLogger(CreateChallengeActivity.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,30 @@ public class CreateChallengeActivity extends Activity {
                 startActivityForResult(Intent.createChooser(intent,"Select Video "), SELECT_VIDEO);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        logger.log(Level.INFO, "Inside onPause of Create Challenge class Activity");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        logger.log(Level.INFO, "Inside OnStop in Create Challenge Class Activity ");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        logger.log(Level.INFO, "Inside Onstart in Create challenge class activity" );
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        logger.log(Level.INFO, "Inside OnDestroy in create challenge class activity" );
+        super.onDestroy();
     }
 
     @Override

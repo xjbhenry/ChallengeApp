@@ -7,7 +7,9 @@
     <string name="add_challenge">Add Challenge</string>
     <string name="title_activity_create_challenge">CreateChallengeActivity</string>
     <string name="feed_page">Challenge Wall</string>
-
+    <string name="profile">My Profile</string>
+    <string name="user_name">User name temp</string>
+    <string name="challenge_comp">Challenges Completed</string>
     <string name="challenge_title">Challenge Title</string>
     <string name="challenge_description">Challenge Description</string>
 

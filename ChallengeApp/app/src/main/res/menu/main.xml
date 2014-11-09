@@ -8,6 +8,11 @@
         app:showAsAction="always"
         android:icon="@drawable/add_icon" />
 
+    <item android:id="@+id/profile"
+          android:title="@string/profile"
+          app:showAsAction="always"
+          android:icon="@drawable/add_icon" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

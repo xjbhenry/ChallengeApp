@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -35,6 +37,8 @@ public class MainActivity extends Activity {
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
     private String URL_FEED = "http://codexu.com/ChallengeMe/feed.json";
+
+    public Logger logger = Logger.getLogger(MainActivity.class.getName());
 
     @SuppressLint("NewApi")
     @Override
@@ -94,6 +98,30 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onPause() {
+        logger.log(Level.INFO, "Inside onPause of Main Activity");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        logger.log(Level.INFO, "Inside OnStop in Main Activity ");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        logger.log(Level.INFO, "Inside Onstart in Main activity" );
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        logger.log(Level.INFO, "Inside OnDestroy in Main activity" );
+        super.onDestroy();
+    }
+
     /**
      * Parsing json reponse and passing the data to feed view list adapter
      * */
@@ -141,6 +169,10 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_challenge) {
             Intent intent = new Intent(this,CreateChallengeActivity.class);
+            startActivity(intent);
+        }
+        if(item.getItemId()==R.id.profile) {
+            Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
