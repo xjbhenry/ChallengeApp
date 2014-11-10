@@ -47,7 +47,6 @@ public class ProfileSubActivity extends Activity {
     protected void onPause() {
         super.onPause();
         mediaPlayer.stop();
-        startTime = 0;
     }
 
     public void play(View view) {
