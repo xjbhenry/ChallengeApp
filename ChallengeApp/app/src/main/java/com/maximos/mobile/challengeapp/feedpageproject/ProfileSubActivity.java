@@ -43,6 +43,13 @@ public class ProfileSubActivity extends Activity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.stop();
+        startTime = 0;
+    }
+
     public void play(View view) {
         Toast.makeText(getApplicationContext(), "Playing sound",
                 Toast.LENGTH_SHORT).show();
