@@ -14,5 +14,8 @@
     <string name="challenge_description">Challenge Description</string>
     <string name="challenge_details">Challenge Details</string>
 
+    <string name="playing">Now Playing:</string>
+    <string name="initial_Time">0 min, 0 sec</string>
+
 
 </resources>
