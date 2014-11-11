@@ -3,7 +3,6 @@ package com.maximos.mobile.challengeapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
@@ -13,11 +12,12 @@ import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,10 +27,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.maximos.mobile.challengeapp.dao.UserDao;
 import com.maximos.mobile.challengeapp.feedpageproject.MainActivity;
+import com.maximos.mobile.challengeapp.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,30 +52,71 @@ import java.util.logging.Logger;
  */
 public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<Cursor>{
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "ankurchaudhry.india@gmail.com:hello", "martinlo@gmail.com:hello"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+        /**
+         * A dummy authentication store containing known user names and passwords.
+         * TODO: remove after connecting to a real authentication system.
+         */
+        private static final String[] DUMMY_CREDENTIALS = new String[]{
+                "ankurchaudhry.india@gmail.com:hello", "martinlo@gmail.com:hello"
+        };
+        /**
+         * Keep track of the login task to ensure we can cancel it if requested.
+         */
+        private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+
     private EditText mPasswordView;
     private View mProgressView;
     private View mEmailLoginFormView;
     private SignInButton mPlusSignInButton;
     private View mSignOutButtons;
     private View mLoginFormView;
-
     public Logger logger = Logger.getLogger(LoginActivity.class.getName());
 
-    @Override
+        //FB
+        private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.hellofacebook:PendingAction";
+        private LoginButton loginButton;
+        private GraphUser user;
+        private PendingAction pendingAction = PendingAction.NONE;
+        private enum PendingAction {
+            NONE,
+            POST_PHOTO,
+            POST_STATUS_UPDATE
+        }
+        private UiLifecycleHelper uiHelper;
+
+        //FB
+        private Session.StatusCallback callback = new Session.StatusCallback() {
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+                //onSessionStateChange(session, state, exception);
+            }
+        };
+
+        private FacebookDialog.Callback dialogCallback = new FacebookDialog.Callback() {
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.d("HelloFacebook", String.format("Error: %s", error.toString()));
+            }
+
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.d("HelloFacebook", "Success!");
+            }
+        };
+
+
+
+        //FB
+
+
+
+
+
+
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         logger.log(Level.INFO, "Inside OnCreate in Login Activity");
         super.onCreate(savedInstanceState);
@@ -122,10 +172,40 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
 
         logger.log(Level.INFO, "OnCreate Exit in Login Activity");
+            /*
 
-    }
+            //FB login
+            uiHelper = new UiLifecycleHelper(this, callback);
+            uiHelper.onCreate(savedInstanceState);
 
-    @Override
+            if (savedInstanceState != null) {
+                String name = savedInstanceState.getString(PENDING_ACTION_BUNDLE_KEY);
+                pendingAction = PendingAction.valueOf(name);
+            }
+
+            setContentView(R.layout.activity_login);
+
+            loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+            loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+
+                @Override
+                public void onUserInfoFetched(GraphUser user) {
+                    LoginActivity.this.user = user;
+                    Log.d("log","success");
+                    //updateUI();
+                    // It's possible that we were waiting for this.user to be populated in order to post a
+                    // status update.
+                    //handlePendingAction();
+                }
+
+            });
+
+
+            //FB login
+            */
+        }
+
+        @Override
     protected void onPause() {
         logger.log(Level.INFO, "Inside onPause of login Activity");
         super.onPause();
@@ -414,7 +494,9 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            User user = new User();
+            user.setUsername(mEmail);
+            user.setPassword(mPassword);
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -431,6 +513,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             }
 
             // TODO: register the new account here.
+            new UserDao().registerUser(user);
             return true;
         }
 
