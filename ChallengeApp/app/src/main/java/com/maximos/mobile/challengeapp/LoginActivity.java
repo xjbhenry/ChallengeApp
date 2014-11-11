@@ -177,6 +177,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
 
             logger.log(Level.INFO, "OnCreate Exit in Login Activity");
+            /*
+
             //FB login
             uiHelper = new UiLifecycleHelper(this, callback);
             uiHelper.onCreate(savedInstanceState);
@@ -200,10 +202,12 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                     // status update.
                     //handlePendingAction();
                 }
+
             });
 
 
             //FB login
+            */
         }
 
         @Override
