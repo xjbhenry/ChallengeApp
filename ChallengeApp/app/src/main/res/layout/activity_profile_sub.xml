@@ -28,6 +28,28 @@
         android:layout_toRightOf="@+id/imageButton2"
         android:onClick="rewind"
         android:src="@android:drawable/ic_media_rew" />-->
+     <TextView
+         android:id="@+id/tv_challenge_name"
+         android:layout_width="wrap_content"
+         android:layout_height="@dimen/activity_profile_challenge_comp"
+         android:layout_marginTop="14dp"
+         android:text="@string/challenge_title"/>
+    <TextView
+        android:id="@+id/tv_challenge_name_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_challenge_name"/>
+    <TextView
+        android:id="@+id/tv_challenge_description"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/activity_profile_challenge_comp"
+        android:layout_below="@id/tv_challenge_name"
+        android:text="@string/challenge_description"/>
+    <TextView
+        android:id="@+id/tv_challenge_description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_challenge_description"/>
     <VideoView android:id="@+id/videoView"
                android:layout_height="fill_parent"
                android:layout_width="fill_parent"
