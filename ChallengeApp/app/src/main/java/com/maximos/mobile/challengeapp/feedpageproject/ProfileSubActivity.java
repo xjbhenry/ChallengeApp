@@ -1,15 +1,17 @@
 package com.maximos.mobile.challengeapp.feedpageproject;
 
 import android.app.Activity;
-import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.maximos.mobile.challengeapp.R;
 
@@ -20,7 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ProfileSubActivity extends Activity {
     public TextView songName, startTimeField, endTimeField;
-    private MediaPlayer mediaPlayer;
+//    private MediaPlayer mediaPlayer;
+    private VideoView videoView;
     private double startTime = 0;
     private double finalTime = 0;
     private Handler myHandler = new Handler();
@@ -36,25 +39,36 @@ public class ProfileSubActivity extends Activity {
         seekbar = (SeekBar) findViewById(R.id.seekBar1);
         playButton = (ImageButton) findViewById(R.id.imageButton1);
         pauseButton = (ImageButton) findViewById(R.id.imageButton2);
-        //songName.setText("One");
-        mediaPlayer = MediaPlayer.create(this, R.raw.one);
+        videoView =(VideoView)findViewById(R.id.videoView);
+        //mediaPlayer = MediaPlayer.create(this, R.raw.one);
         seekbar.setClickable(false);
         pauseButton.setEnabled(false);
 
+        MediaController mediaController= new MediaController(this);
+        mediaController.setAnchorView(videoView);
+        //Uri uri=Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.one);
+        Uri uri=Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+        videoView.setMediaController(mediaController);
+        videoView.setVideoURI(uri);
+        videoView.requestFocus();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
+       // mediaPlayer.stop();
+        videoView.stopPlayback();
     }
 
     public void play(View view) {
         Toast.makeText(getApplicationContext(), "Playing sound",
                 Toast.LENGTH_SHORT).show();
-        mediaPlayer.start();
-        finalTime = mediaPlayer.getDuration();
-        startTime = mediaPlayer.getCurrentPosition();
+        //mediaPlayer.start();
+        videoView.start();
+        finalTime = videoView.getDuration();
+        //finalTime = mediaPlayer.getDuration();
+        //startTime = mediaPlayer.getCurrentPosition();
+        startTime = videoView.getCurrentPosition();
         if (oneTimeOnly == 0) {
             seekbar.setMax((int) finalTime);
             oneTimeOnly = 1;
@@ -80,7 +94,7 @@ public class ProfileSubActivity extends Activity {
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mediaPlayer.getCurrentPosition();
+            startTime = videoView.getCurrentPosition();
             startTimeField.setText(String.format("%d min, %d sec",
                             TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                             TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
@@ -96,7 +110,7 @@ public class ProfileSubActivity extends Activity {
         Toast.makeText(getApplicationContext(), "Pausing sound",
                 Toast.LENGTH_SHORT).show();
 
-        mediaPlayer.pause();
+        videoView.pause();
         pauseButton.setEnabled(false);
         playButton.setEnabled(true);
     }
