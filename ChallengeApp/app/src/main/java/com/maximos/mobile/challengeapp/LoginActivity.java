@@ -165,9 +165,27 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
 
             logger.log(Level.INFO, "OnCreate Exit in Login Activity");
-            /*
+
 
             //FB login
+
+            loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+            loginButton.setReadPermissions("user_friend",
+                "public_profile",
+                "email",
+                "user_likes",
+                "user_about_me",
+                "user_birthday");
+            loginButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fbLogin();
+                }
+            });
+
+
+
+            /*
             uiHelper = new UiLifecycleHelper(this, callback);
             uiHelper.onCreate(savedInstanceState);
 
@@ -193,12 +211,30 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             });
 
-
-            //FB login
             */
+            //FB login
+
+        }
+        public void fbLogin(){
+            Session.openActiveSession(this, true, new Session.StatusCallback() {
+                @Override
+                public void call(Session session, SessionState state,Exception exception) {
+                    if (session.isOpened()) {
+                        Log.e("success",session.getAccessToken()); // get token
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
         }
 
-        @Override
+    @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            Session.getActiveSession().onActivityResult(this, requestCode,resultCode, data);
+        }
+
+    @Override
         protected void onPause() {
             logger.log(Level.INFO, "Inside onPause of login Activity");
             super.onPause();
