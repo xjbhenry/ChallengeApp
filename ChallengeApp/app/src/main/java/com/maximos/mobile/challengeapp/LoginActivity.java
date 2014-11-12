@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -37,6 +39,7 @@ import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.dao.UserDao;
 import com.maximos.mobile.challengeapp.feedpageproject.MainActivity;
 import com.maximos.mobile.challengeapp.model.User;
@@ -488,8 +491,10 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             protected Boolean doInBackground(Void... params) {
                 // TODO: attempt authentication against a network service.
                 User user = new User();
-                user.setUsername(mEmail);
+                user.setUserId(mEmail);
                 user.setPassword(mPassword);
+                Context context = getApplicationContext();
+                new UserDao().logUser(user, context);
 
                 try {
                     // Simulate network access.
@@ -498,17 +503,20 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
                     return false;
                 }
 
-                for (String credential : DUMMY_CREDENTIALS) {
+               /* for (String credential : DUMMY_CREDENTIALS) {
                     String[] pieces = credential.split(":");
                     if (pieces[0].equals(mEmail)) {
                         // Account exists, return true if the password matches.
                         return pieces[1].equals(mPassword);
                     }
-                }
+                }*/
 
                 // TODO: register the new account here.
-                new UserDao().registerUser(user);
-                return true;
+
+                SharedPreferences prefs = context.getSharedPreferences(App_Constants.USER_PREFERENCE_FILE,getApplicationContext().MODE_PRIVATE);
+                Boolean isLoggedIn = prefs.getBoolean(App_Constants.IS_USER_LOGGED_IN, false);
+                logger.log(Level.INFO," : " + isLoggedIn);
+                return isLoggedIn;
             }
 
             @Override

@@ -25,4 +25,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:5.2.08'
     compile project(':libraries:volley')
     compile project(':libraries:facebook')
+    compile files('libs/com.mysql.jdbc_5.1.5.jar')
 }
