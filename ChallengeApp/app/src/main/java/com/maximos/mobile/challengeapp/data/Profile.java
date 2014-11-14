@@ -4,23 +4,9 @@ package com.maximos.mobile.challengeapp.data;
  * Created by Henry on 10/4/2014.
  */
 public class Profile {
-    int userId;
-    String name;
-    int[] challengeIdCompleted;
-    String challengeIdCompletedCat;
-    int[] challengeIdOngiong;
-    String challengeIdOngoingCat;
-    int[] challengeIdCreated;
-    String challengeIdCreatedCat;
-    int credits;
-    int[] friendsId;
-    String friendsIdCat;
-    int affiliationId;
-    int[] visitedPlaceId;
-    String visitedPlaceIdCat;
-    int[] interestId;
-    String interestIdCat;
-    String description;
+    private String userId;
+    private String name;
+    private String userAvatar;
 
     public String getName() {
         return name;
@@ -30,11 +16,34 @@ public class Profile {
         this.name = name;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+/*    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -158,5 +167,5 @@ public class Profile {
 
     public int getAffiliationId() {
         return affiliationId;
-    }
+    }*/
 }

@@ -21,4 +21,6 @@ public class DB_Constants {
     public static final String USER_UPDATED_TIMESTAMP_FIELD ="updated_timestamp";
     public static final String USER_COUNT_FIELD = "COUNT";
 
+    public static final String INSERT_INTO_USER = "INSERT INTO  `dogest_challengeapp`.`User` (`UserName` , `Password`) VALUES (?,  ?);";
+    public static final String GET_PROFILE = "SELECT * FROM `profile` WHERE `userid` = ?";
 }

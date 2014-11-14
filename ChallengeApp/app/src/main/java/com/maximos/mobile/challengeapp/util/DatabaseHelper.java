@@ -135,13 +135,13 @@ public class DatabaseHelper {
             ContentValues cv = new ContentValues();
             cv.put("userId", profile.getUserId());
             cv.put("name", profile.getName());
-            cv.put("challengeIdCompleted", profile.getChallengeIdCompletedCat());
+/*            cv.put("challengeIdCompleted", profile.getChallengeIdCompletedCat());
             cv.put("challengeIdOngoing",profile.getChallengeIdOngoingCat());
             cv.put("challengeIdCreated", profile.getChallengeIdCreatedCat());
             cv.put("credits", profile.getCredits());
             cv.put("friendsId", profile.getFriendsIdCat());
             cv.put("visitedPlaceId", profile.getVisitedPlaceIdCat());
-            cv.put("description", profile.getDescription());
+            cv.put("description", profile.getDescription());*/
 
             // return userId;
         }
@@ -211,9 +211,9 @@ public class DatabaseHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Profile profileSelected = new Profile();
-                    profileSelected.setUserId(cursor.getInt(cursor.getColumnIndex("postId")));
+                    profileSelected.setUserId(cursor.getString(cursor.getColumnIndex("postId")));
                     profileSelected.setName(cursor.getString(cursor.getColumnIndex("name")));
-                    profileSelected.setChallengeIdCompletedCat(cursor.getString(cursor.getColumnIndex("challengeIdCompleted")));
+/*                    profileSelected.setChallengeIdCompletedCat(cursor.getString(cursor.getColumnIndex("challengeIdCompleted")));
                     profileSelected.setChallengeIdOngoingCat(cursor.getString(cursor.getColumnIndex("challengeIdOngoing")));
                     profileSelected.setChallengeIdCreatedCat(cursor.getString(cursor.getColumnIndex("challengeIdCreated")));
                     profileSelected.setCredits(cursor.getInt(cursor.getColumnIndex("credits")));
@@ -221,7 +221,7 @@ public class DatabaseHelper {
                    // profileSelected.setAffiliationIdCat(cursor.getString(cursor.getColumnIndex("affiliationId")));
                     profileSelected.setVisitedPlaceIdCat(cursor.getString(cursor.getColumnIndex("visitedPlaceId")));
                     profileSelected.setInterestIdCat(cursor.getString(cursor.getColumnIndex("interestId")));
-                    profileSelected.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+                    profileSelected.setDescription(cursor.getString(cursor.getColumnIndex("description")));*/
                     // adding to todo list
                     profile.add(profileSelected);
                 } while (cursor.moveToNext());
