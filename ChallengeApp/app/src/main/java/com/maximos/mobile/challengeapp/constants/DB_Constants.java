@@ -14,6 +14,12 @@ public class DB_Constants {
     public static final String UPDATE_USER = "UPDATE `user` SET `address` = ?, `name` = ?, `email` = ? WHERE userid = ?";
     public static final String GET_USER = "SELECT * FROM `user` WHERE `userid` = ?";
 
+    /* Queries for Challenge Table */
+    public static final String INSERT_CHALLENGE = "INSERT INTO `challenge`(`title`, `description`, `category`, `demonstration`, `created_timestamp`, `updated_timestamp`, `creatorid`) VALUES (?,?,?,?,?,?,?)";
+
+    /* Queries for Notification Service */
+    public static final String INSERT_NOTIFICATION = "INSERT INTO ";
+
     /* Constants for User table */
     public static final String USER_ID_FIELD = "userid";
     public static final String USER_PASSWORD_FIELD = "password";
