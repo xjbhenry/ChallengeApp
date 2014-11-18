@@ -32,4 +32,11 @@ public class DB_Constants {
     public static final String GET_USER_ACTIVITY = "SELECT * FROM `user_activity` WHERE `userid` = ?";
     /*Queries for challenge table*/
     public static final String GET_CHALLENGE = "SELECT * FROM `challenge` WHERE `challengeid` = ?";
+
+    /*Queries for friend table*/
+    public static final String GET_FRIEND = "SELECT * FROM `friends WHERE `userid` = ?`";
+    public static final String STORE_FRIEND = "UPDATE `friends` SET `friendid` = ? WHERE `userid` = ?";
+
+    /* Constant for friend table */
+    public static final String TAG_FRIENDID = "friendid";
 }

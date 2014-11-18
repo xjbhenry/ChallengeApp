@@ -35,6 +35,7 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.maximos.mobile.challengeapp.R;
 import com.maximos.mobile.challengeapp.app.AppController;
+import com.maximos.mobile.challengeapp.data.FriendInfo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -44,15 +45,54 @@ import java.util.List;
 
 public class FriendPickerSampleActivity extends FragmentActivity {
 
-    public class FriendInfo{
+    /*public class FriendInfo{
 
-        public String name;
-        public String id;
-        public String email;
-        public String user_about_me;
-        public String imgUrl;
+        private String name;
+        private String id;
+        private String email;
+        private String user_about_me;
+        private String imgUrl;
 
-    }
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getUser_about_me() {
+            return user_about_me;
+        }
+
+        public void setUser_about_me(String user_about_me) {
+            this.user_about_me = user_about_me;
+        }
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+    }*/
 
     private static List<String> PERMISSIONS = new ArrayList<String>() {
         {
@@ -216,8 +256,8 @@ public class FriendPickerSampleActivity extends FragmentActivity {
             for (GraphUser user : selection) {
                 names.add(user.getName());
                 FriendInfo friend = new FriendInfo();
-                friend.name = user.getName();
-                friend.id = user.getId();
+                friend.setName(user.getName());
+                friend.setId(user.getId());
                 String stringURL = null;
                 try {
                     stringURL = "http://graph.facebook.com/"+ URLEncoder.encode(user.getId(), "UTF-8")+"/"+ URLEncoder.encode("picture", "UTF-8");
@@ -226,7 +266,7 @@ public class FriendPickerSampleActivity extends FragmentActivity {
                 }
 
                 Log.d("Url", "getProfilePicture final url is : " + stringURL);
-                friend.imgUrl = stringURL;
+                friend.setImgUrl(stringURL);
                 Log.d("name", user.getName());
                 Log.d("id", user.getId());
                 Log.d("Url", "getProfilePicture final url is : " + stringURL);
