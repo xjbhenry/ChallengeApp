@@ -22,6 +22,11 @@
             android:layout_height="@dimen/abc_action_bar_default_height"
             android:gravity="center"
             android:text="@string/user_name"/>
+        <Button
+            android:id="@+id/profile_mod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_mod"/>
     </LinearLayout>
     <View
         android:layout_width="fill_parent"

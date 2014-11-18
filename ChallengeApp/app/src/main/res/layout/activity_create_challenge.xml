@@ -8,17 +8,17 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/challenge_title"
         android:hint="@string/challenge_title"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
-<!--    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:ems="10"
-        android:id="@+id/editText2" />-->
+    <!--    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/editText2" />-->
 
     <Spinner
         android:layout_width="match_parent"
@@ -45,8 +45,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload Image"
-        android:id="@+id/uploadImage" />
+        android:text="Record Audio"
+        android:id="@+id/recordaudio" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

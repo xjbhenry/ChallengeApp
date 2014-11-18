@@ -37,7 +37,7 @@ public class DBConnect {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            String differentWay = "jdbc:mysql://"+HOSTNAME+"/"+DB_NAME+"?" + "user="+USERNAME+"&password="+PASSWORD;
+            String differentWay = "jdbc:mysql://"+HOSTNAME+"/"+DB_NAME+"?zeroDateTimeBehavior=convertToNull" + "&user="+USERNAME+"&password="+PASSWORD;
             conn = DriverManager.getConnection(differentWay);
             if (conn != null) {
                 System.out.println("You made it, take control your database now!");

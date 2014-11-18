@@ -12,10 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.facebook.widget.PickerFragment;
 import com.maximos.mobile.challengeapp.FetchFriends.FriendPickerSampleActivity;
-import com.maximos.mobile.challengeapp.FetchFriends.PickFriendsActivity;
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.util.RecordAudio;
+import com.maximos.mobile.challengeapp.util.VideoCapture;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,22 +41,36 @@ public class CreateChallengeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_challenge);
-        ((Button)findViewById(R.id.uploadImage)).setOnClickListener(new View.OnClickListener() {
+        ((Button)findViewById(R.id.recordaudio)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                /*Intent intent = new Intent();
                 intent.setType("audio/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Audio "), SELECT_AUDIO);
+                */
+                Intent intent;
+                intent = new Intent(CreateChallengeActivity.this, RecordAudio.class);
+                startActivity(intent);
+
+
+
             }
         });
         ((Button)findViewById(R.id.uploadVideo)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 Intent intent = new Intent();
                 intent.setType("video/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Video "), SELECT_VIDEO);
+                */
+                Intent intent;
+                intent = new Intent(CreateChallengeActivity.this, VideoCapture.class);
+                startActivity(intent);
+
+
             }
         });
         ((Button)findViewById(R.id.selectFriend)).setOnClickListener(new View.OnClickListener() {
@@ -109,13 +123,13 @@ public class CreateChallengeActivity extends Activity {
         }
     }
 
-        public String getPath(Uri uri) {
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Cursor cursor = managedQuery(uri, projection, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
     private void uploadVideo(String selectedPath){
         HttpURLConnection conn = null;

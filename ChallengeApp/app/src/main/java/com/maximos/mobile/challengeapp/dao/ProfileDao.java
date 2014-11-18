@@ -2,12 +2,15 @@ package com.maximos.mobile.challengeapp.dao;
 
 import com.maximos.mobile.challengeapp.constants.DB_Constants;
 import com.maximos.mobile.challengeapp.data.Profile;
+import com.maximos.mobile.challengeapp.data.UserActivity;
 import com.maximos.mobile.challengeapp.util.DBConnect;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +20,7 @@ import java.util.logging.Logger;
 public class ProfileDao {
     private String TAG_NAME = ProfileDao.class.getName();
     private Logger logger = Logger.getLogger(TAG_NAME);
-    Profile profile = new Profile();
+    private Profile profile = new Profile();
 
 
     public Profile getProfile (String userId){
@@ -38,7 +41,6 @@ public class ProfileDao {
                 profile.setName(rs.getString("userid"));
                 profile.setUserAvatar(rs.getString("avatar_link"));
             }
-            conn.commit();
 
         } catch(SQLException e) {
             logger.log(Level.INFO,TAG_NAME + " : SQL Exception");
@@ -52,4 +54,43 @@ public class ProfileDao {
         }
         return profile;
     }
+
+
+    public List <UserActivity> getUserActivity (String userId) {
+        List userActivityList = new ArrayList();
+
+
+        Connection conn = DBConnect.getConnection();
+        try {
+            logger.log(Level.INFO,TAG_NAME + " :inside db");
+            PreparedStatement stmt = conn.prepareStatement(DB_Constants.GET_USER_ACTIVITY);
+            stmt.setString(1, userId);
+            logger.log(Level.INFO,TAG_NAME + " :ok");
+           /* stmt.setString(1,user.getUsername());
+            stmt.setString(2,user.getPassword());*/
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                UserActivity userActivity = new UserActivity();
+                logger.log(Level.INFO,TAG_NAME + ": Working");
+                userActivity.setUserId(userId);
+                userActivity.setChallengeId(rs.getInt("challengeid"));
+                userActivity.setChallengeStatus(rs.getInt("status"));
+                userActivity.setChallengeCreatedTimeStamp(rs.getTimestamp("created_timestamp"));
+                userActivity.setChallengeUpdatedTimeStamp(rs.getTimestamp("updated_timestamp"));
+                userActivityList.add(userActivity);
+            }
+
+        } catch(SQLException e) {
+            logger.log(Level.INFO,TAG_NAME + " : SQL Exception");
+            e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+            }
+        }
+        return userActivityList;
+    }
+
 }

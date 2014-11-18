@@ -43,6 +43,13 @@ public class UserDao {
         } catch(SQLException e) {
             logger.log(Level.SEVERE,TAG_NAME + " : SqlException");
             e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+                e.printStackTrace();
+            }
         }
         logger.log(Level.INFO,"result :" + result);
         return result;
@@ -67,6 +74,13 @@ public class UserDao {
         } catch(SQLException e) {
             logger.log(Level.SEVERE, TAG_NAME + " : SQL Exception");
             e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+                e.printStackTrace();
+            }
         }
         return userDetails;
     }
@@ -88,6 +102,13 @@ public class UserDao {
         } catch(SQLException e) {
             logger.log(Level.SEVERE,TAG_NAME + " : SqlException");
             e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -142,5 +163,63 @@ public class UserDao {
             editor.clear();
         }
         editor.commit();
+    }
+
+    public boolean updateUser (User user) {
+        logger.log(Level.INFO,TAG_NAME + " :update user");
+        Boolean result = false;
+        Connection conn = DBConnect.getConnection();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(DB_Constants.UPDATE_USER);
+            stmt.setString(1,user.getAddress());
+            stmt.setString(2,user.getName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getUserId());
+            int rowCounts = stmt.executeUpdate();
+            if (rowCounts >= 1) {
+                logger.log(Level.INFO, TAG_NAME + "updated" + rowCounts +"lines");
+                result = true;
+            }
+        } catch(SQLException e) {
+            logger.log(Level.SEVERE, TAG_NAME + " : SQL Exception");
+            e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public User getUser(String userId) {
+        logger.log(Level.INFO,TAG_NAME + " :fetching user");
+        User userDetails = new User();
+        Connection conn = DBConnect.getConnection();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(DB_Constants.GET_USER);
+            stmt.setString(1,userId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                userDetails.setUserId(rs.getString(DB_Constants.USER_ID_FIELD));
+                userDetails.setEmail(rs.getString(DB_Constants.USER_EMAIL_FIELD));
+                userDetails.setName(rs.getString(DB_Constants.USER_NAME_FIELD));
+                userDetails.setPassword(rs.getString(DB_Constants.USER_PASSWORD_FIELD));
+                userDetails.setAddress(rs.getString(DB_Constants.USER_ADDRESS_FIELD));
+            }
+        } catch(SQLException e) {
+            logger.log(Level.SEVERE, TAG_NAME + " : SQL Exception");
+            e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+                e.printStackTrace();
+            }
+        }
+        return userDetails;
     }
 }

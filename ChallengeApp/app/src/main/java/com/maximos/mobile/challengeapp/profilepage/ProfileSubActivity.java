@@ -1,7 +1,8 @@
-package com.maximos.mobile.challengeapp.feedpageproject;
+package com.maximos.mobile.challengeapp.profilepage;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.dao.ProfileSubDao;
+import com.maximos.mobile.challengeapp.data.Challenge;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,10 +33,20 @@ public class ProfileSubActivity extends Activity {
     private SeekBar seekbar;
     private ImageButton playButton, pauseButton;
     public static int oneTimeOnly = 0;
+    private static final String TAG_CHALLENGE_ID = "challengeId";
+    private int challengeId;
+    private Challenge mChallenge;
+    private ProfileSubTask mProfileSubTask;
+    private TextView challengeTitle, challengeDescription;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        challengeId = getIntent().getExtras().getInt(TAG_CHALLENGE_ID);
+
+
         setContentView(R.layout.activity_profile_sub);
         startTimeField = (TextView) findViewById(R.id.textView1);
         seekbar = (SeekBar) findViewById(R.id.seekBar1);
@@ -44,20 +57,20 @@ public class ProfileSubActivity extends Activity {
         seekbar.setClickable(false);
         pauseButton.setEnabled(false);
 
-        MediaController mediaController= new MediaController(this);
-        mediaController.setAnchorView(videoView);
+
+        mProfileSubTask = new ProfileSubTask(challengeId);
+        mProfileSubTask.execute((Void)null);
+
         //Uri uri=Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.one);
-        Uri uri=Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-        videoView.setMediaController(mediaController);
-        videoView.setVideoURI(uri);
-        videoView.requestFocus();
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // mediaPlayer.stop();
         videoView.stopPlayback();
+        finish();
     }
 
     public void play(View view) {
@@ -119,5 +132,38 @@ public class ProfileSubActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public class ProfileSubTask extends AsyncTask <Void, Void, Boolean> {
+        private final int challengeId;
+        ProfileSubTask (int challengeId) {
+            this.challengeId = challengeId;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            mChallenge = new ProfileSubDao().getChallenge(challengeId);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            MediaController mediaController= new MediaController(ProfileSubActivity.this);
+            mediaController.setAnchorView(videoView);
+            Uri uri=Uri.parse(mChallenge.getChallengeDemonstration());
+            videoView.setMediaController(mediaController);
+            videoView.setVideoURI(uri);
+            videoView.requestFocus();
+            challengeTitle.setText(mChallenge.getChallengeTitle());
+            challengeDescription.setText(mChallenge.getChallengeDescription());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            challengeTitle = (TextView)findViewById(R.id.tv_challenge_name_value);
+            challengeDescription = (TextView)findViewById(R.id.tv_challenge_description_value);
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.maximos.mobile.challengeapp.R;
 import com.maximos.mobile.challengeapp.adapter.FeedListAdapter;
 import com.maximos.mobile.challengeapp.app.AppController;
 import com.maximos.mobile.challengeapp.data.FeedItem;
+import com.maximos.mobile.challengeapp.profilepage.ProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -44,7 +44,7 @@ import java.util.List;
 
 public class FriendPickerSampleActivity extends FragmentActivity {
 
-    public class FriendIfo{
+    public class FriendInfo{
 
         public String name;
         public String id;
@@ -208,14 +208,14 @@ public class FriendPickerSampleActivity extends FragmentActivity {
     private void displaySelectedFriends(int resultCode) {
         String results = "";
         AppController application = (AppController) getApplication();
-        ArrayList<FriendIfo> friendList = new ArrayList();
+        ArrayList<FriendInfo> friendList = new ArrayList();
         Collection<GraphUser> selection = application.getSelectedUsers();
         if (selection != null && selection.size() > 0) {
             ArrayList<String> names = new ArrayList<String>();
-            ArrayList<FriendIfo> users = new ArrayList<FriendIfo>();
+            ArrayList<FriendInfo> users = new ArrayList<FriendInfo>();
             for (GraphUser user : selection) {
                 names.add(user.getName());
-                FriendIfo friend = new FriendIfo();
+                FriendInfo friend = new FriendInfo();
                 friend.name = user.getName();
                 friend.id = user.getId();
                 String stringURL = null;
