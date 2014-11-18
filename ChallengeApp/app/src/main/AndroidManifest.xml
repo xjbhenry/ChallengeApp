@@ -66,16 +66,16 @@
             android:label="@string/profile_mod_title" >
         </activity>
         <activity
+            android:name=".feedpageproject.ToDoChallengesActivity"
+            android:label="@string/title_activity_to_do_challenges">
+        </activity>
+        <activity
             android:name=".util.RecordAudio"
             android:label="record_audio" >
         </activity>
         <activity
             android:name=".util.VideoCapture"
             android:label="@string/title_activity_video_capture" >
-        </activity>
-        <activity
-            android:name=".util.TakePicture"
-            android:label="@string/title_activity_take_picture" >
         </activity>
     </application>
     <!-- To access Google+ APIs: -->
