@@ -10,4 +10,5 @@ public class App_Constants {
     /* User Data */
     public static final String LOGGED_USER_ID = "logged_user_id";
     public static final String IS_USER_LOGGED_IN = "is_user_logged";
+    public static final String DATA_UPLOADED = "Data is uploaded";
 }

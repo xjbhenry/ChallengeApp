@@ -1,34 +1,36 @@
 package com.maximos.mobile.challengeapp.feedpageproject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.maximos.mobile.challengeapp.FetchFriends.FriendPickerSampleActivity;
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
+import com.maximos.mobile.challengeapp.dao.ChallengeDao;
+import com.maximos.mobile.challengeapp.model.Challenge;
 import com.maximos.mobile.challengeapp.util.RecordAudio;
+import com.maximos.mobile.challengeapp.util.UploadFile;
 import com.maximos.mobile.challengeapp.util.VideoCapture;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -44,13 +46,17 @@ public class CreateChallengeActivity extends Activity {
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
     ImageView mImageView;
+    private static int responseCode = 0;
+    String fileOnServer = "";
+
     public Logger logger = Logger.getLogger(CreateChallengeActivity.class.getName());
+    private static final String TAG_NAME = CreateChallengeActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_challenge);
-        ((Button)findViewById(R.id.recordAudio)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.recordAudio)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*Intent intent = new Intent();
@@ -63,10 +69,9 @@ public class CreateChallengeActivity extends Activity {
                 startActivity(intent);
 
 
-
             }
         });
-        ((Button)findViewById(R.id.takePicture)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.takePicture)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -91,7 +96,7 @@ public class CreateChallengeActivity extends Activity {
 
             }
         });
-        ((Button)findViewById(R.id.uploadVideo)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.uploadVideo)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*
@@ -107,13 +112,53 @@ public class CreateChallengeActivity extends Activity {
 
             }
         });
-        ((Button)findViewById(R.id.selectFriend)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.selectFriend)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
                 intent = new Intent(CreateChallengeActivity.this, FriendPickerSampleActivity.class);
                 startActivity(intent);
 
+            }
+        });
+        ((Button) findViewById(R.id.upload_audio)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("audio/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Audio "), SELECT_AUDIO);
+            }
+        });
+        ((Button) findViewById(R.id.upload_video)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("video/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Video "), SELECT_VIDEO);
+            }
+        });
+        ((Button) findViewById(R.id.upload_image)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Image "), SELECT_IMAGE);
+            }
+        });
+        ((Button) findViewById(R.id.location)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        ((Button) findViewById(R.id.create_challenge)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateChallengeTask createChallengeAsyncTask = new CreateChallengeTask();
+                createChallengeAsyncTask.execute((Void) null);
             }
         });
     }
@@ -149,37 +194,55 @@ public class CreateChallengeActivity extends Activity {
 
     @Override
     protected void onStart() {
-        logger.log(Level.INFO, "Inside Onstart in Create challenge class activity" );
+        logger.log(Level.INFO, "Inside Onstart in Create challenge class activity");
         super.onStart();
     }
 
     @Override
     protected void onDestroy() {
-        logger.log(Level.INFO, "Inside OnDestroy in create challenge class activity" );
+        logger.log(Level.INFO, "Inside OnDestroy in create challenge class activity");
         super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
 
+        if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_VIDEO) {
-                System.out.println("SELECT_VIDEO");
+                logger.log(Level.INFO, TAG_NAME + ": Upload Video with Uri" + data.getData());
+                Uri selectedVideoUri = data.getData();
+                selectedPath = getPath(selectedVideoUri);
+                logger.log(Level.INFO, TAG_NAME + ": path selected" + selectedPath);
+                FileUploadAsyncTask fileUploadAsyncTask = new FileUploadAsyncTask(selectedPath);
+                fileUploadAsyncTask.execute((Void) null);
+            } else if (requestCode == SELECT_AUDIO) {
+                logger.log(Level.INFO, TAG_NAME + ": Upload Audio with Uri" + data.getData());
+                Uri selectedAudioUri = data.getData();
+                selectedPath = getPath(selectedAudioUri);
+                logger.log(Level.INFO, TAG_NAME + ": path selected" + selectedPath);
+                FileUploadAsyncTask fileUploadAsyncTask = new FileUploadAsyncTask(selectedPath);
+                fileUploadAsyncTask.execute((Void) null);
+            } else if (requestCode == SELECT_IMAGE) {
+                logger.log(Level.INFO, TAG_NAME + ": Upload Image with Uri" + data.getData());
                 Uri selectedImageUri = data.getData();
                 selectedPath = getPath(selectedImageUri);
-                System.out.println("SELECT_VIDEO Path : " + selectedPath);
-                uploadVideo(selectedPath);
+                logger.log(Level.INFO, TAG_NAME + ": path selected" + selectedPath);
+                FileUploadAsyncTask fileUploadAsyncTask = new FileUploadAsyncTask(selectedPath);
+                fileUploadAsyncTask.execute((Void) null);
             }
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            setPic();
-            galleryAddPic();
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
+            if (requestCode == 200) {
+                TextView textView = (TextView) findViewById(R.id.uploadTextResult);
+                textView.setText(App_Constants.DATA_UPLOADED);
+            }
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                setPic();
+                galleryAddPic();
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                mImageView.setImageBitmap(imageBitmap);
 
-            super.onActivityResult(requestCode, resultCode, data);
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
@@ -191,6 +254,7 @@ public class CreateChallengeActivity extends Activity {
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
+
     private void setPic() {
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();
@@ -204,7 +268,7 @@ public class CreateChallengeActivity extends Activity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -214,98 +278,22 @@ public class CreateChallengeActivity extends Activity {
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
     }
+
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+            logger.log(Level.INFO, TAG_NAME + " : cursor" + cursor);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
     }
 
-    private void uploadVideo(String selectedPath){
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        DataInputStream inStream = null;
-        String lineEnd = "rn";
-        String twoHyphens = "--";
-        String boundary =  "*****";
-        int bytesRead, bytesAvailable, bufferSize;
-        byte[] buffer;
-        int maxBufferSize = 1*1024*1024;
-        String responseFromServer = "";
-        String urlString = "http://your_website.com/upload_audio_test/upload_audio.php";
-        try
-        {
-            //------------------ CLIENT REQUEST
-            FileInputStream fileInputStream = new FileInputStream(new File(selectedPath));
-            // open a URL connection to the Servlet
-            URL url = new URL(urlString);
-            // Open a HTTP connection to the URL
-            conn = (HttpURLConnection) url.openConnection();
-            // Allow Inputs
-            conn.setDoInput(true);
-            // Allow Outputs
-            conn.setDoOutput(true);
-            // Don't use a cached copy.
-            conn.setUseCaches(false);
-            // Use a post method.
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
-            dos = new DataOutputStream( conn.getOutputStream() );
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name='uploadedfile;filename='' + selectedPath + ''" + lineEnd);
-            dos.writeBytes(lineEnd);
-            // create a buffer of maximum size
-            bytesAvailable = fileInputStream.available();
-            bufferSize = Math.min(bytesAvailable, maxBufferSize);
-            buffer = new byte[bufferSize];
-            // read file and write it into form...
-            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-            while (bytesRead > 0)
-            {
-                dos.write(buffer, 0, bufferSize);
-                bytesAvailable = fileInputStream.available();
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-            }
-            // send multipart form data necesssary after file data...
-            dos.writeBytes(lineEnd);
-            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-            // close streams
-            Log.e("Debug","File is written");
-            fileInputStream.close();
-            dos.flush();
-            dos.close();
-        }
-        catch (MalformedURLException ex)
-        {
-            Log.e("Debug", "error: " + ex.getMessage(), ex);
-        }
-        catch (IOException ioe)
-        {
-            Log.e("Debug", "error: " + ioe.getMessage(), ioe);
-        }
-        catch (Exception ex) {
-            Log.e("Debug", "error: " + ex.getMessage(), ex);
-        }
-
-        //------------------ read the SERVER RESPONSE
-        try {
-            inStream = new DataInputStream ( conn.getInputStream() );
-            String str;
-
-            while (( str = inStream.readLine()) != null)
-            {
-                Log.e("Debug","Server Response "+str);
-            }
-            inStream.close();
-
-        }
-        catch (IOException ioex){
-            Log.e("Debug", "error: " + ioex.getMessage(), ioex);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -326,5 +314,74 @@ public class CreateChallengeActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class FileUploadAsyncTask extends AsyncTask<Void, Void, Object> {
+        private String selectedPath;
+
+        private ProgressDialog pd;
+
+        FileUploadAsyncTask(String selectedPath) {
+            this.selectedPath = selectedPath;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(CreateChallengeActivity.this);
+            pd.setTitle("Uploading File..");
+            pd.setMessage("Please wait,File is getting sent");
+            pd.setCancelable(true);
+            pd.setIndeterminate(true);
+            pd.show();
+        }
+
+        @Override
+        protected Object doInBackground(Void... params) {
+            UploadFile uploadFile = new UploadFile();
+            responseCode = uploadFile.uploadVideo(selectedPath);
+            fileOnServer = uploadFile.fileOnServer;
+            logger.log(Level.INFO, TAG_NAME + " : file on server " + fileOnServer);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            pd.dismiss();
+        }
+    }
+
+    public class CreateChallengeTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog pd;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(CreateChallengeActivity.this);
+            pd.setTitle("Creating Challenge..");
+            pd.setMessage("Please wait, Creating Challenge ");
+            pd.setCancelable(true);
+            pd.setIndeterminate(true);
+            pd.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String creatorId = "";
+            EditText titleEditText = (EditText) findViewById(R.id.title);
+            String title = titleEditText.getText().toString();
+            EditText descEditText = (EditText) findViewById(R.id.challenge_desc);
+            String desc = titleEditText.getText().toString();
+            SharedPreferences prefs = getSharedPreferences(App_Constants.USER_PREFERENCE_FILE, getApplicationContext().MODE_PRIVATE);
+            Boolean isLoggedIn = prefs.getBoolean(App_Constants.IS_USER_LOGGED_IN, false);
+            logger.log(Level.INFO, " : " + isLoggedIn);
+            if (isLoggedIn) {
+                creatorId = prefs.getString(App_Constants.LOGGED_USER_ID, "none");
+                Challenge challenge = new Challenge(title, desc, 1, fileOnServer, null, null, creatorId);
+                ChallengeDao.createChallenge(challenge);
+            }
+            return null;
+        }
     }
 }

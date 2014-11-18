@@ -8,7 +8,7 @@
     <string name="title_activity_create_challenge">CreateChallengeActivity</string>
     <string name="feed_page">Challenge Wall</string>
     <string name="profile">My Profile</string>
-    <string name="selectFriend">Select Friends</string>
+    <string name="selectFriend">Challenge Friends</string>
     <string name="user_name">User name temp</string>
     <string name="challenge_comp">Challenges Completed</string>
     <string name="challenge_title">Challenge Title</string>
@@ -31,7 +31,7 @@
     <string name="profile_mod_title">Update your profile</string>
     <string name="title_activity_video_capture">VideoCapture</string>
     <string name="title_activity_take_picture">TakePicture</string>
-    <string name="upload_file">Upload File</string>
+    <string name="upload_file">Upload Challenge File</string>
     <string name="to_do_challenges">To Do Challenges</string>
     <string name="title_activity_to_do_challenges">ToDoChallengeActivity</string>
 
@@ -41,6 +41,6 @@
     <string name="upload_image">Upload Challenge Image</string>
 
     <!--locaation properties -->
-    <string name="latitude_longitude">Lat_lon</string>
+    <string name="selectLocation">Select Challenge Location</string>
 
 </resources>

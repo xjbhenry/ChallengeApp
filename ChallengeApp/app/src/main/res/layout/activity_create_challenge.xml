@@ -140,9 +140,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create"
+        android:text="Create Challenge"
         android:shadowColor="@color/title_background_color"
-        android:id="@+id/button"
+        android:id="@+id/create_challenge"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
