@@ -31,9 +31,6 @@ public class FriendDao {
             logger.log(Level.INFO,TAG_NAME + " :inside db");
             PreparedStatement stmt = conn.prepareStatement(DB_Constants.GET_FRIEND);
             stmt.setString(1, userId);
-            logger.log(Level.INFO,TAG_NAME + " :ok");
-           /* stmt.setString(1,user.getUsername());
-            stmt.setString(2,user.getPassword());*/
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 logger.log(Level.INFO,TAG_NAME + ": Working");
@@ -64,9 +61,6 @@ public class FriendDao {
             PreparedStatement stmt = conn.prepareStatement(DB_Constants.GET_FRIEND);
             stmt.setString(1,friendString);
             stmt.setString(2, userId);
-            logger.log(Level.INFO,TAG_NAME + " :ok");
-           /* stmt.setString(1,user.getUsername());
-            stmt.setString(2,user.getPassword());*/
             int rowCounts = stmt.executeUpdate();
             while(rowCounts >= 1) {
                 logger.log(Level.INFO, TAG_NAME + "updated" + rowCounts +"lines");
