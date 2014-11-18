@@ -101,7 +101,7 @@
                     android:textStyle="bold"/>
                 <com.facebook.widget.LoginButton
                     android:id="@+id/fb_login_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     facebook:confirm_logout="false"

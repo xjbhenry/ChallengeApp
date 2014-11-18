@@ -41,12 +41,17 @@
         android:layout_height="wrap_content"
         android:text="Upload Video"
         android:id="@+id/uploadVideo" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Picture"
+        android:id="@+id/takePicture" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Record Audio"
-        android:id="@+id/recordaudio" />
+        android:id="@+id/recordAudio" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
