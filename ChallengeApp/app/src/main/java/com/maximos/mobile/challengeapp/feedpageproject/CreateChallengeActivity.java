@@ -386,13 +386,13 @@ public class CreateChallengeActivity extends Activity {
                 Challenge challenge = new Challenge(title, desc, 1, fileOnServer, null, null, creatorId);
                 ChallengeDao.createChallenge(challenge);
             }
+            pd.dismiss();
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void o) {
-            super.onPostExecute(o);
-            pd.dismiss();
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 }
