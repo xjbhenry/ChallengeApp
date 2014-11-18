@@ -35,9 +35,13 @@ public class DB_Constants {
     /*Queries for profile table*/
     public static final String GET_PROFILE = "SELECT * FROM `profile` WHERE `userid` = ?";
     /*Queries for user_activity table*/
-    public static final String GET_USER_ACTIVITY = "SELECT * FROM `user_activity` WHERE `userid` = ?";
+    public static final String GET_USER_ACTIVITY = "SELECT * FROM `user_activity` WHERE `userid` = ? AND `status` = 1";
+    public static final String GET_USER_ACTIVITY_TODO = "SELECT * FROM `user_activity` WHERE `userid` = ? AND `status` = 0";
     /*Queries for challenge table*/
     public static final String GET_CHALLENGE = "SELECT * FROM `challenge` WHERE `challengeid` = ?";
+    //public static final String GET_CHALLENGE = "SELECT * FROM `challenge` WHERE `challengeid` IN (SELECT `challengeid` from user_activity where `status`= 1 AND `challengeid` = ?)";
+    //public static final String GET_CHALLENGE_TODO = "SELECT * FROM `challenge` WHERE `challengeid` IN (SELECT `challengeid` from user_activity where `status`= 0 AND `challengeid` = ?)";
+    public static final String GET_CHALLENGE_TODO = "SELECT * FROM `challenge` WHERE `challengeid` = ?";
 
     /*Queries for friend table*/
     public static final String GET_FRIEND = "SELECT * FROM `friends WHERE `userid` = ?`";

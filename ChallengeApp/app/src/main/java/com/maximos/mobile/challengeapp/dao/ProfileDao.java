@@ -93,4 +93,41 @@ public class ProfileDao {
         return userActivityList;
     }
 
+    public List <UserActivity> getUserActivityToDo (String userId) {
+        List userActivityList = new ArrayList();
+
+
+        Connection conn = DBConnect.getConnection();
+        try {
+            logger.log(Level.INFO,TAG_NAME + " :inside db");
+            PreparedStatement stmt = conn.prepareStatement(DB_Constants.GET_USER_ACTIVITY_TODO);
+            stmt.setString(1, userId);
+            logger.log(Level.INFO,TAG_NAME + " :ok");
+           /* stmt.setString(1,user.getUsername());
+            stmt.setString(2,user.getPassword());*/
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                UserActivity userActivity = new UserActivity();
+                logger.log(Level.INFO,TAG_NAME + ": Working");
+                userActivity.setUserId(userId);
+                userActivity.setChallengeId(rs.getInt("challengeid"));
+                userActivity.setChallengeStatus(rs.getInt("status"));
+                userActivity.setChallengeCreatedTimeStamp(rs.getTimestamp("created_timestamp"));
+                userActivity.setChallengeUpdatedTimeStamp(rs.getTimestamp("updated_timestamp"));
+                userActivityList.add(userActivity);
+            }
+
+        } catch(SQLException e) {
+            logger.log(Level.INFO,TAG_NAME + " : SQL Exception");
+            e.printStackTrace();
+        } finally {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                logger.log(Level.INFO,TAG_NAME + ": Close connection");
+            }
+        }
+        return userActivityList;
+    }
+
 }
