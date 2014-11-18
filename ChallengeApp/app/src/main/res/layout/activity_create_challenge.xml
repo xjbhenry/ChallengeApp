@@ -20,12 +20,21 @@
             android:ems="10"
             android:id="@+id/editText2" />-->
 
-    <Spinner
+    <!--<Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner" />
+        android:id="@+id/spinner" />-->
 
     <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:hint="@string/challenge_description"
+        android:id="@+id/challenge_desc"
+        android:layout_gravity="center_horizontal" />
+
+   <!-- <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
@@ -34,55 +43,99 @@
         android:hint="@string/challenge_description"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        />
+        />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/abc_search_url_text_holo"
+        android:id="@+id/uploadTextResult" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capture Video"
+            android:id="@+id/uploadVideo" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_video"
+            android:id="@+id/upload_video" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capture Picture"
+            android:id="@+id/takePicture" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_image"
+            android:id="@+id/upload_image" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Record Audio"
+            android:id="@+id/recordAudio" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_audio"
+            android:id="@+id/upload_audio" />
+
+        </LinearLayout>
+
+
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload Video"
-        android:id="@+id/uploadVideo" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Picture"
-        android:id="@+id/takePicture" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record Audio"
-        android:id="@+id/recordAudio" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Friend"
+        android:text="@string/selectFriend"
         android:id="@+id/selectFriend" />
 
-    <!--<ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/uploadImage"
-        />
+        android:id="@+id/location"
+        android:text="@string/selectLocation"/>
 
-    <ImageButton
+    <!--<ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton2"
         android:layout_gravity="center_horizontal" />-->
 
-    <EditText
+   <!-- <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:ems="10"
         android:id="@+id/editText4"
-        android:layout_gravity="center_horizontal" />
-
-    <VideoView
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/videoView"
-        />
+        android:layout_gravity="center_horizontal" />-->
 
     <Button
         android:layout_width="wrap_content"

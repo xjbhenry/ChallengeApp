@@ -30,7 +30,7 @@
             android:id="@+id/resultsTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             />
 
 </LinearLayout>
