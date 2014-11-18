@@ -63,7 +63,7 @@ public class LocationUtils {
 
             // Return the latitude and longitude as strings
             return context.getString(
-                    R.string.latitude_longitude,
+                    R.string.selectLocation,
                     currentLocation.getLatitude(),
                     currentLocation.getLongitude());
         } else {

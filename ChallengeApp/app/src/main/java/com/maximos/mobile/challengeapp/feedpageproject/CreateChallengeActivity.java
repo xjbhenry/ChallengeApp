@@ -368,6 +368,11 @@ public class CreateChallengeActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
             String creatorId = "";
             EditText titleEditText = (EditText) findViewById(R.id.title);
             String title = titleEditText.getText().toString();
@@ -382,6 +387,12 @@ public class CreateChallengeActivity extends Activity {
                 ChallengeDao.createChallenge(challenge);
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void o) {
+            super.onPostExecute(o);
+            pd.dismiss();
         }
     }
 }
