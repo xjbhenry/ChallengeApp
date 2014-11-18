@@ -32,7 +32,7 @@
     <string name="title_activity_video_capture">VideoCapture</string>
     <string name="title_activity_take_picture">TakePicture</string>
     <string name="upload_file">Upload File</string>
-    <string name="to_do_challenge">To Do Challenges</string>
+    <string name="to_do_challenges">To Do Challenges</string>
     <string name="title_activity_to_do_challenges">ToDoChallengeActivity</string>
 
     <!--upload file Strings-->

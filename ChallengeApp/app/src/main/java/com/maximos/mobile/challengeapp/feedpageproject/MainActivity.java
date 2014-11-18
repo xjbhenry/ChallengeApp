@@ -177,7 +177,10 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }
         if(item.getItemId()==R.id.profile) {
-            Intent intent = new Intent(this,ProfileActivity.class);
+            Intent intent = new Intent(this, ProfileActivity.class);
+        }
+        if(item.getItemId()==R.id.to_do_challenges) {
+            Intent intent = new Intent(this,ToDoChallengesActivity.class);
             startActivity(intent);
         }
 
