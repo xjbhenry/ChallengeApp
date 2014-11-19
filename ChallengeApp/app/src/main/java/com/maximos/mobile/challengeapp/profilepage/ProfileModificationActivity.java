@@ -24,11 +24,29 @@ public class ProfileModificationActivity extends Activity {
     private String userId;
     private Button mButtonOk;
     private User mUserMod;
+    private static final String TAG_NAME = "mNane";
+    private static final String TAG_EMAIL = "mEmail";
+    private static final String TAG_ADDRESS = "mAddress";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_modification);
+
+        mName = (EditText)findViewById(R.id.profile_mod_name);
+        mEmail = (EditText)findViewById(R.id.profile_mod_email);
+        mAddress = (EditText)findViewById(R.id.profile_mod_address);
+
+        if (savedInstanceState != null) {
+            String mNameText = savedInstanceState.getString(TAG_NAME);
+            String mEmailText = savedInstanceState.getString(TAG_EMAIL);
+            String mAddressText = savedInstanceState.getString(TAG_ADDRESS);
+            mName.setText(mNameText);
+            mEmail.setText(mEmailText);
+            mAddress.setText(mAddressText);
+        }
+
         userId = getIntent().getExtras().getString(DB_Constants.TAG_USERID);
         mProfileModificationTask = new ProfileModificationTask(userId);
         mProfileModificationTask.execute((Void)null);
@@ -46,6 +64,7 @@ public class ProfileModificationActivity extends Activity {
                 mProfileModSubmitTask.execute((Void)null);
                 Intent intent = new Intent(ProfileModificationActivity.this,ProfileActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -54,7 +73,15 @@ public class ProfileModificationActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
+        //finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TAG_NAME, mName.getText().toString());
+        outState.putString(TAG_EMAIL, mEmail.getText().toString());
+        outState.putString(TAG_ADDRESS, mAddress.getText().toString());
     }
 
     public class ProfileModificationTask extends AsyncTask <Void, Void, Boolean> {
@@ -70,13 +97,13 @@ public class ProfileModificationActivity extends Activity {
             return true;
         }
 
-        @Override
+/*        @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mName = (EditText)findViewById(R.id.profile_mod_name);
             mEmail = (EditText)findViewById(R.id.profile_mod_email);
             mAddress = (EditText)findViewById(R.id.profile_mod_address);
-        }
+        }*/
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {

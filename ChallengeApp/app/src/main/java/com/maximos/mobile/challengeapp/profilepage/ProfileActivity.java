@@ -141,6 +141,7 @@ public class ProfileActivity extends Activity {
                 intent.putExtra(DB_Constants.TAG_USERID, DB_Constants.TAG_USERID);
                 //Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
                 startActivity(intent);
+                finish();
             }
         });
 
