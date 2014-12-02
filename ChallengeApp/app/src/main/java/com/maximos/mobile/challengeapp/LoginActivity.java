@@ -29,6 +29,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -44,6 +46,7 @@ import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.dao.UserDao;
 import com.maximos.mobile.challengeapp.feedpageproject.MainActivity;
 import com.maximos.mobile.challengeapp.model.User;
+import com.maximos.mobile.challengeapp.util.ConnectivityTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +93,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         POST_STATUS_UPDATE
     }
     private UiLifecycleHelper uiHelper;
+    private ConnectivityTest mConnectivityTest;
 
     //FB
     private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -122,6 +126,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        mConnectivityTest = new ConnectivityTest(this);
+
 
         // Find the Google+ sign in button.
         mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
@@ -151,8 +157,17 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+                    if (mConnectivityTest.isNetConnected()) {
+                        if (mConnectivityTest.is3gConnected()) {
+                            Toast.makeText(LoginActivity.this, App_Constants.THREE_G_CONNECTED, Toast.LENGTH_SHORT).show();
+                        } else if (mConnectivityTest.isWifiConnected()) {
+                            Toast.makeText(LoginActivity.this, App_Constants.WIFI_CONNECTED, Toast.LENGTH_SHORT).show();
+                        }
+                        attemptLogin();
+                        return true;
+                    } else {
+                        Toast.makeText(LoginActivity.this,App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
@@ -192,6 +207,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         });
         Bundle params = new Bundle();
         params.putString("label_cohort", "{ref: custom_label}");
+        //test network connection
 /* make the API call */
 
 
@@ -561,6 +577,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             user.setUserId(mEmail);
             user.setPassword(mPassword);
             Context context = getApplicationContext();
+
             new UserDao().logUser(user, context);
 
             try {

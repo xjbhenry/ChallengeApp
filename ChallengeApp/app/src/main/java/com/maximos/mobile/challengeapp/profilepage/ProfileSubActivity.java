@@ -15,8 +15,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.dao.ProfileSubDao;
 import com.maximos.mobile.challengeapp.data.Challenge;
+import com.maximos.mobile.challengeapp.util.ConnectivityTest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -57,9 +59,12 @@ public class ProfileSubActivity extends Activity {
         seekbar.setClickable(false);
         pauseButton.setEnabled(false);
 
-
-        mProfileSubTask = new ProfileSubTask(challengeId);
-        mProfileSubTask.execute((Void)null);
+        if (new ConnectivityTest(this).isNetConnected()) {
+            mProfileSubTask = new ProfileSubTask(challengeId);
+            mProfileSubTask.execute((Void) null);
+        } else {
+            Toast.makeText(this, App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+        }
 
         //Uri uri=Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.one);
 

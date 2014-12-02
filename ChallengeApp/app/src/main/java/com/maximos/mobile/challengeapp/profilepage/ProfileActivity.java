@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.constants.DB_Constants;
 import com.maximos.mobile.challengeapp.dao.ProfileDao;
 import com.maximos.mobile.challengeapp.dao.ProfileSubDao;
@@ -26,6 +27,7 @@ import com.maximos.mobile.challengeapp.data.Challenge;
 import com.maximos.mobile.challengeapp.data.Profile;
 import com.maximos.mobile.challengeapp.data.UserActivity;
 import com.maximos.mobile.challengeapp.feedpageproject.MainActivity;
+import com.maximos.mobile.challengeapp.util.ConnectivityTest;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class ProfileActivity extends Activity {
     private List<UserActivity> mUserActivityList;
     private Challenge mChallenge;
     private Button mButtonUpdateProfile;
+    private ConnectivityTest mConnectivityTest;
     //private FeedListAdapter listAdapter;
     //private List<FeedItem> feedItems;
     //private List<Profile> mProfileSelected;
@@ -62,8 +65,13 @@ public class ProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         mButtonUpdateProfile = (Button)findViewById(R.id.profile_mod);
-        mProfileTask = new ProfileTask(DB_Constants.TAG_USERID);
-        mProfileTask.execute((Void)null);
+        mConnectivityTest = new ConnectivityTest(this);
+        if (mConnectivityTest.isNetConnected()) {
+            mProfileTask = new ProfileTask(DB_Constants.TAG_USERID);
+            mProfileTask.execute((Void) null);
+        } else {
+            Toast.makeText(this, App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+        }
 
         logger.log(Level.INFO, TAG_NAME + ": inside onCreate of profile");
         //listView = (ListView) findViewById(R.id.list);
@@ -107,43 +115,6 @@ public class ProfileActivity extends Activity {
 
         // Assign adapter to ListView
         //listView.setAdapter(adapter);
-
-
-        // ListView Item Click Listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                //String  itemValue    = (String) mListView.getItemAtPosition(position);
-                HashMap<String, String> map = (HashMap<String, String>) mListView.getItemAtPosition(position);
-                int mId = Integer.parseInt(map.get(TAG_CHALLENGE_ID));
-
-                // Show Alert
-                /*Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ID : " + itemValue, Toast.LENGTH_LONG)
-                        .show();*/
-                Intent intent = new Intent(ProfileActivity.this, ProfileSubActivity.class);
-                intent.putExtra(TAG_CHALLENGE_ID, mId);
-                Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
-                startActivity(intent);
-            }
-        });
-
-        mButtonUpdateProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, ProfileModificationActivity.class);
-                intent.putExtra(DB_Constants.TAG_USERID, DB_Constants.TAG_USERID);
-                //Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
-                startActivity(intent);
-                finish();
-            }
-        });
 
     }
 
@@ -229,7 +200,53 @@ public class ProfileActivity extends Activity {
             super.onPostExecute(aBoolean);
             mName.setText(profile.getName());
             mAvatar.setImageBitmap(bm);
+            //mAvatar.setImageURI(Uri.parse("http://2.bp.blogspot.com/_Q46X5DgEXN4/Rwa_IQUAEoI/AAAAAAAAAA0/vX3489Z92KE/s1600/gelo%5B1%5D.bitmap"));
             mListView.setAdapter(adapter);
+
+            // ListView Item Click Listener
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    // ListView Clicked item index
+                    int itemPosition = position;
+
+                    // ListView Clicked item value
+                    //String  itemValue    = (String) mListView.getItemAtPosition(position);
+                    HashMap<String, String> map = (HashMap<String, String>) mListView.getItemAtPosition(position);
+                    int mId = Integer.parseInt(map.get(TAG_CHALLENGE_ID));
+
+                    // Show Alert
+                /*Toast.makeText(getApplicationContext(),
+                        "Position :" + itemPosition + "  ID : " + itemValue, Toast.LENGTH_LONG)
+                        .show();*/
+                    if (new ConnectivityTest(ProfileActivity.this).isNetConnected()) {
+                        Intent intent = new Intent(ProfileActivity.this, ProfileSubActivity.class);
+                        intent.putExtra(TAG_CHALLENGE_ID, mId);
+                        Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(ProfileActivity.this,App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            mButtonUpdateProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (new ConnectivityTest(ProfileActivity.this).isNetConnected()) {
+                        Intent intent = new Intent(ProfileActivity.this, ProfileModificationActivity.class);
+                        intent.putExtra(DB_Constants.TAG_USERID, DB_Constants.TAG_USERID);
+                        //Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Toast.makeText(ProfileActivity.this,App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 /*            Bitmap mIcon11 = null;
             try {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Cache.Entry;
@@ -19,8 +20,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.maximos.mobile.challengeapp.R;
 import com.maximos.mobile.challengeapp.adapter.FeedListAdapter;
 import com.maximos.mobile.challengeapp.app.AppController;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.data.FeedItem;
 import com.maximos.mobile.challengeapp.profilepage.ProfileActivity;
+import com.maximos.mobile.challengeapp.util.ConnectivityTest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -168,21 +171,24 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.add_challenge) {
-            Intent intent = new Intent(this,CreateChallengeActivity.class);
+
+        if (item.getItemId() == R.id.add_challenge) {
+            Intent intent = new Intent(this, CreateChallengeActivity.class);
             startActivity(intent);
         }
-        if(item.getItemId()==R.id.profile) {
-            Intent intent = new Intent(this,ProfileActivity.class);
-            startActivity(intent);
+        if (new ConnectivityTest(this).isNetConnected()) {
+            if (item.getItemId() == R.id.profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+            }
+            if (item.getItemId() == R.id.to_do_challenges) {
+                Intent intent = new Intent(this, ToDoChallengesActivity.class);
+                startActivity(intent);
+            }
+        } else {
+            Toast.makeText(this, App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
         }
-        if(item.getItemId()==R.id.profile) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-        }
-        if(item.getItemId()==R.id.to_do_challenges) {
-            Intent intent = new Intent(this,ToDoChallengesActivity.class);
-            startActivity(intent);
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

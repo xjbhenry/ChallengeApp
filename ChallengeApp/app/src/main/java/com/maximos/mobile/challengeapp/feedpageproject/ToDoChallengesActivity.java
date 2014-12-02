@@ -13,6 +13,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.maximos.mobile.challengeapp.R;
+import com.maximos.mobile.challengeapp.constants.App_Constants;
 import com.maximos.mobile.challengeapp.constants.DB_Constants;
 import com.maximos.mobile.challengeapp.dao.ProfileDao;
 import com.maximos.mobile.challengeapp.dao.ProfileSubDao;
@@ -20,6 +21,7 @@ import com.maximos.mobile.challengeapp.data.Challenge;
 import com.maximos.mobile.challengeapp.data.Profile;
 import com.maximos.mobile.challengeapp.data.UserActivity;
 import com.maximos.mobile.challengeapp.profilepage.ProfileSubActivity;
+import com.maximos.mobile.challengeapp.util.ConnectivityTest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,10 +76,14 @@ public class ToDoChallengesActivity extends Activity {
                 /*Toast.makeText(getApplicationContext(),
                         "Position :" + itemPosition + "  ID : " + itemValue, Toast.LENGTH_LONG)
                         .show();*/
-                Intent intent = new Intent(ToDoChallengesActivity.this, ProfileSubActivity.class);
-                intent.putExtra(TAG_CHALLENGE_ID, mId);
-                Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                if (new ConnectivityTest(ToDoChallengesActivity.this).isNetConnected()) {
+                    Intent intent = new Intent(ToDoChallengesActivity.this, ProfileSubActivity.class);
+                    intent.putExtra(TAG_CHALLENGE_ID, mId);
+                    Toast.makeText(getApplicationContext(), "ID" + mId, Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(ToDoChallengesActivity.this, App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
