@@ -177,7 +177,16 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                if (mConnectivityTest.isNetConnected()) {
+                    if (mConnectivityTest.is3gConnected()) {
+                        Toast.makeText(LoginActivity.this, App_Constants.THREE_G_CONNECTED, Toast.LENGTH_SHORT).show();
+                    } else if (mConnectivityTest.isWifiConnected()) {
+                        Toast.makeText(LoginActivity.this, App_Constants.WIFI_CONNECTED, Toast.LENGTH_SHORT).show();
+                    }
+                    attemptLogin();
+                } else {
+                    Toast.makeText(LoginActivity.this,App_Constants.NETWORK_FAILURE,Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -367,9 +376,8 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-
-            mAuthTask.execute((Void) null);
+             mAuthTask = new UserLoginTask(email, password);
+             mAuthTask.execute((Void) null);
         }
     }
     private boolean isEmailValid(String email) {

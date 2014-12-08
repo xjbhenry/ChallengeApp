@@ -151,7 +151,7 @@ public class ProfileModificationActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            if (!result) {
+            if (result) {
                 Toast.makeText(ProfileModificationActivity.this, App_Constants.UPDATED, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(ProfileModificationActivity.this, App_Constants.UPDATE_FAILED, Toast.LENGTH_SHORT).show();
