@@ -38,7 +38,6 @@ public void testPreferenceIsSaved() throws Exception {
     solo.waitForView(R.id.profile_mod_address);
     solo.clearEditText(text1);
     solo.enterText(text1, "Martin");
-
     EditText text2 = (EditText)solo.getView(R.id.profile_mod_email);
     solo.clearEditText(text2);
     solo.enterText(text2, "kuanwenlo@gmail.com");

@@ -5,27 +5,12 @@ package com.maximos.mobile.challengeapp.test;
  */
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.EditText;
 
 import com.maximos.mobile.challengeapp.LoginActivity;
 import com.maximos.mobile.challengeapp.R;
-import com.maximos.mobile.challengeapp.profilepage.ProfileActivity;
 import com.robotium.solo.Solo;
 
-import junit.framework.Assert;
-import junit.framework.Test;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.maximos.mobile.challengeapp.profilepage.ProfileActivity;
-import com.robotium.solo.Solo;
-
-import junit.framework.Assert;
 import junit.framework.Test;
 
 import java.util.logging.Level;

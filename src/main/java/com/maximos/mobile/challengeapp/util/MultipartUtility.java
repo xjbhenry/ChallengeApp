@@ -156,7 +156,7 @@ public class MultipartUtility {
         List<String> response = new ArrayList<String>();
 
         writer.append(LINE_FEED).flush();
-        writer.append("--" + boundary + "--").append(LINE_FEED);
+        writer.append("--" + boundary + "--").append(LINE_FEEgitD);
         writer.close();
 
         // checks server's status code first

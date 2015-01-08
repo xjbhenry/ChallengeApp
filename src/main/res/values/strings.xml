@@ -35,12 +35,13 @@
     <string name="to_do_challenges">To Do Challenges</string>
     <string name="title_activity_to_do_challenges">ToDoChallengeActivity</string>
 
-    <!--upload file Strings-->
+    <!-- upload file Strings -->
     <string name="upload_video">Upload Challenge Video</string>
     <string name="upload_audio">Upload Challenge Audio</string>
     <string name="upload_image">Upload Challenge Image</string>
 
-    <!--locaation properties -->
+    <!-- locaation properties -->
     <string name="selectLocation">Select Challenge Location</string>
+    <string name="title_activity_test">testActivity</string>
 
 </resources>
